@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>index.html表示してます</h1>
+    <p>{{ my_dict.insert_something1 }}</p>
+    <p>{{ my_dict.insert_something2 }}</p>
+    
+    <h2>タイトル表示</h2>
+    <ul>
+        {% for title in my_dict.test_titles %}
+        {% if title == 'title2' %}
+            <li>{{ title }}</li>
+        {% elif title == 'title3' %}
+            <li>見せられないよ</li>
+        {% else %}
+            <li>xxxx</li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
