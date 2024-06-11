@@ -4,18 +4,19 @@ Created on 2024-04-16 (Tue) 23:14:54
 
 @author: I.Azuma
 """
+import pandas as pd
+
 from flask import render_template, request
+from flask_wtf import FlaskForm
+from wtforms import FileField, SubmitField
+from wtforms.validators import DataRequired
+
 from gldadec_dev import app
 from gldadec_dev.calc_circle import calculation_circle
 
 @app.route('/')
 def index():
-    my_dict = {
-        'insert_something1': 'views.pyのinsert_something1部分です。',
-        'insert_something2': 'views.pyのinsert_something2部分です。',
-        'test_titles':['title1','title2','title3']
-    }
-    return render_template('files/index.html', my_dict=my_dict)
+	return render_template('files/index.html')
 
 @app.route('/calc')
 def other():
@@ -32,6 +33,19 @@ def calc():
 			return render_template('files/calc.html', area=result[0],circumference=result[1])
 		else:
 			return render_template('files/calc.html',error=result)
-		
+
+class UploadForm(FlaskForm):
+    file = FileField('CSVファイルを選択', validators=[DataRequired()])
+    submit = SubmitField('アップロード')
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+	form = UploadForm()
+	if form.validate_on_submit():
+		file = form.file.data
+		df = pd.read_csv(file)
+		print(df.head())
+	return render_template('files/upload.html', form=form)
+
 if __name__ == '__main__':
     app.run()
