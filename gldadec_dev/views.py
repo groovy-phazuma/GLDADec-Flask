@@ -13,14 +13,16 @@ from wtforms.validators import DataRequired
 
 from gldadec_dev import app
 from gldadec_dev.calc_circle import calculation_circle
+from gldadec_dev.simple_run import run_simple_gldadec
 
 @app.route('/')
 def index():
-	return render_template('files/index.html')
+	result = run_simple_gldadec()
+	return render_template('layout.html')
 
-@app.route('/calc')
-def other():
-    return render_template('files/calc.html')
+@app.route('/run')
+def run_simple():
+    return render_template('files/simple_run.html')
 
 @app.route("/calc", methods=['GET','POST'])
 def calc():
