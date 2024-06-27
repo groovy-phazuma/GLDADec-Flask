@@ -17,12 +17,18 @@ from gldadec_dev.simple_run import run_simple_gldadec
 
 @app.route('/')
 def index():
-	result = run_simple_gldadec()
-	return render_template('layout.html')
+	return render_template('layout.html',title='GLDADec-Home')
 
-@app.route('/run')
+@app.route('/run', methods=['GET','POST'])
 def run_simple():
-    return render_template('files/simple_run.html')
+	render_template('layout.html')
+	title='GLDADec-Run'
+
+	if request.method == 'GET':
+		return render_template('files/simple_run.html',title=title)
+	elif request.method == 'POST':
+		deconv_res = run_simple_gldadec()
+		return render_template('files/simple_run.html',title=title,table=(deconv_res.to_html(classes='table table-striped')))
 
 @app.route("/calc", methods=['GET','POST'])
 def calc():

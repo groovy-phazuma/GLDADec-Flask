@@ -7,7 +7,6 @@ Conduct Guided LDA deconvolution
 @author: I.Azuma
 """
 # %%
-import os
 import pandas as pd
 
 from pathlib import Path
@@ -37,4 +36,9 @@ def run_simple_gldadec():
 
     # collect output
     deconv_res = pp.merge_total_res
+    deconv_mean = sum(deconv_res)/len(deconv_res)
+    fxn = lambda x : round(x,3)
+    deconv_mean = deconv_mean.applymap(fxn)
+
+    return deconv_mean
 

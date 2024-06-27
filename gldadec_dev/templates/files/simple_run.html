@@ -1,24 +1,28 @@
-<!doctype html>
-<html>
+{% extends "common_layout.html" %}
+{% block title %}
+<title>{{title}}</title>
+{% endblock %}
+
+{% block content %}
+<form action='/run' method='POST'>
+	<input type='submit' value='start'>
+</form>
+
+{%if table %}
+<html lang="en">
 	<head>
-		<meta charset="utf-8">
-		<title>User Input and Calclation Page</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>DataFrame Display</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 	</head>
-	
-	<body>
-	
-	<h1>そのまま単純に実行</h1>
-	
-	<form action='/simple_run' method='POST'>
-		<input name='diameter' type='text' placeholder='20'>
-		<input type='submit' value='計算'>
-	</form>
-	{%if area and circumference%}
-	<p>面積は、{{area}}</p>
-	<p>円周は、{{circumference}}</p>
-	{%else%}
-	<p>{{error}}</p>
-	{%endif%}
-	</body>
-	
+<body>
+    <h2>Deconvolution Results</h2>    
+    {{table | safe}}
+</body>
+{%endif%}
+</body>
+
 </html>
+
+{% endblock %}
