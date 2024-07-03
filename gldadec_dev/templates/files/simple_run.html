@@ -4,16 +4,41 @@
 {% endblock %}
 
 {% block content %}
-<form action='/run' method='POST'>
-	<input type='submit' value='start'>
-</form>
+
+<!-- Example -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flask Button Styling</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <form action="/run" method="POST">
+        <button class="styled-button" type="submit">Example</button>
+    </form>
+</body>
+</html>
+
+<!-- Custom -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flask Button Styling</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <form action="/run" method="POST">
+        <button class="styled-button" type="submit">Custom</button>
+    </form>
+</body>
+</html>
+
 
 {%if table %}
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>DataFrame Display</title>
 		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 	</head>
 <body>
