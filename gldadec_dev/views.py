@@ -43,8 +43,8 @@ def calc():
 			return render_template('files/calc.html',error=result)
 
 class UploadForm(FlaskForm):
-    file = FileField('CSVファイルを選択', validators=[DataRequired()])
-    submit = SubmitField('アップロード')
+    file = FileField('Mixture', validators=[DataRequired()])
+    submit = SubmitField('Upload')
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():

@@ -28,7 +28,7 @@ body {
     background-color: #f9f9f9;
 }
 
-.styled-button {
+.example-button {
     background-color: #4CAF50; /* Green */
     border: none;
     color: white;
@@ -41,8 +41,29 @@ body {
     cursor: pointer;
     border-radius: 8px;
     box-shadow: 0 4px #999; /* Add a shadow on mouse-over */
+    transition: .3s;
 }
 
-.styled-button:hover {
+.example-button:hover {
     background-color: #3e8e41;
+}
+
+.custom-button {
+    background-color: #6771fd; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 10px;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 0 4px #999; /* Add a shadow on mouse-over */
+    transition: .3s;
+}
+
+.custom-button:hover {
+    background-color: #5360ee;
 }

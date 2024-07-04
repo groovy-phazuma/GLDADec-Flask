@@ -1,16 +1,25 @@
+{% extends "common_layout.html" %}
+{% block title %}
+<title>{{title}}</title>
+{% endblock %}
+
+{% block content %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>CSVアップロード</title>
+    <meta charset="UTF-8">
 </head>
 <body>
-  <form method="POST" enctype="multipart/form-data">
-    {{ form.hidden_tag() }}
-    <p>
-      {{ form.file.label }}<br>
-      {{ form.file() }}
-    </p>
-    <p>{{ form.submit() }}</p>
-  </form>
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.file.label }}<br>
+            {{ form.file() }}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
 </body>
 </html>
+
+{% endblock %}
