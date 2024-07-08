@@ -6,4 +6,4 @@ Created on 2024-04-16 (Tue) 23:37:16
 """
 DEBUG = True
 SECRET_KEY = "phazuma"
-UPLOAD_PATH = "C:/github/GLDADec/data/GSE65133/GSE65133_expression.csv"
+UPLOAD_PATH = "C:/github/GLDADec/data/"

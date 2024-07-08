@@ -12,14 +12,22 @@
 </head>
 <body>
     <form method="POST" enctype="multipart/form-data">
-        {{ form.hidden_tag() }}
+        {{ form1.hidden_tag() }}
         <p>
-            {{ form.file.label }}<br>
-            {{ form.file() }}
+            {{ form1.file.label }}<br>
+            {{ form1.file() }}
         </p>
-        <p>{{ form.submit() }}</p>
+
+        {{ form2.hidden_tag() }}
+        <p>
+            {{ form2.file.label }}<br>
+            {{ form2.file() }}
+        </p>
+        <input type="submit" value="Upload">
     </form>
 </body>
+
+
 </html>
 
 {% endblock %}

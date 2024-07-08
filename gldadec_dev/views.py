@@ -4,6 +4,7 @@ Created on 2024-04-16 (Tue) 23:14:54
 
 @author: I.Azuma
 """
+import os
 import pandas as pd
 
 from flask import render_template, request
@@ -42,18 +43,30 @@ def calc():
 		else:
 			return render_template('files/calc.html',error=result)
 
-class UploadForm(FlaskForm):
+class UploadMixture(FlaskForm):
     file = FileField('Mixture', validators=[DataRequired()])
-    submit = SubmitField('Upload')
+    submit = SubmitField('Upload_1')
+
+class UploadReference(FlaskForm):
+    file = FileField('Reference', validators=[DataRequired()])
+    submit = SubmitField('Upload_2')
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
-	form = UploadForm()
-	if form.validate_on_submit():
-		file = form.file.data
-		df = pd.read_csv(file)
-		print(df.head())
-	return render_template('files/upload.html', form=form)
+	form1 = UploadMixture()
+	form2 = UploadReference()
+
+	if form1.validate_on_submit() and form2.validate_on_submit():
+
+		file1 = form1.file.data
+		df1 = pd.read_csv(file1)
+		print(df1.head())
+	
+		file2 = form2.file.data
+		df2 = pd.read_csv(file2)
+		print(df2.head())
+	
+	return render_template('files/upload.html', form1=form1, form2=form1)
 
 if __name__ == '__main__':
     app.run()
