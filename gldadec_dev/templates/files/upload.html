@@ -11,23 +11,17 @@
     <meta charset="UTF-8">
 </head>
 <body>
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data" action="{{ url_for('upload') }}">
         {{ form1.hidden_tag() }}
         <p>
             {{ form1.file.label }}<br>
             {{ form1.file() }}
         </p>
-
-        {{ form2.hidden_tag() }}
-        <p>
-            {{ form2.file.label }}<br>
-            {{ form2.file() }}
-        </p>
+        <input type="file" name="uploadFile_aa"/ multiple="multiple">
         <input type="submit" value="Upload">
+
     </form>
 </body>
-
-
 </html>
 
 {% endblock %}
