@@ -1,42 +1,160 @@
 {% extends "common_layout.html" %}
 {% block title %}
-<title>{{title}}</title>
+<title>{{ title }}</title>
 {% endblock %}
 
 {% block content %}
 
-<table>
-    <tr>
-    <td>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-        <form action="/run" method="POST">
-            <button class="example-button" type="submit">Example</button>
-        </form>
-    </td>
-    <td>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-        <form action="/upload_multi" method="POST">
-            <button class="custom-button" type="submit">Custom</button>
-        </form>
-    </td>
-    </tr>
-</table>
-
-
-{%if table %}
+<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-	</head>
-<body>
-    <h2>Deconvolution Results</h2>    
-    {{table | safe}}
-</body>
-{%endif%}
-</body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
 
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* Ensures child elements stay within the container */
+        }
+
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-bottom: 30px;
+            margin-top: 20px; /* Adds space above the "Run" button */
+        }
+
+        .run-button, .custom-button {
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .run-button {
+            background-color: #e53935; /* Red color */
+        }
+
+        .run-button:hover {
+            background-color: #c62828;
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .custom-button {
+            background-color: #4CAF50; /* Green color */
+        }
+
+        .custom-button:hover {
+            background-color: #388E3C;
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .output-container {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-height: 400px; /* Adjust the height as needed */
+            overflow-y: auto; /* Enables vertical scrolling */
+        }
+
+        @media (max-width: 768px) {
+            table {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ title }}</h1>
+        
+        <div class="button-container">
+            <form action="/upload_multi" method="POST">
+                <button class="custom-button" type="submit">Custom</button>
+            </form>
+        </div>
+        
+        {% if files_data %}
+            <h2>Uploaded Files</h2>
+            <div style="overflow-x: auto;"> <!-- Ensures table is scrollable on small screens -->
+                <table>
+                    <tr>
+                        <th>Filename</th>
+                        <th>Shape (Rows, Columns)</th>
+                    </tr>
+                    {% for file in files_data %}
+                    <tr>
+                        <td>{{ file.name }}</td>
+                        <td>{{ file.shape }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% else %}
+            <p style="text-align: center;">No files found in the uploads directory.</p>
+        {% endif %}
+        
+        <div class="button-container">
+            <form action="/run" method="POST">
+                <button class="run-button" type="submit">Run</button>
+            </form>
+        </div>
+        
+        <div class="output-container">
+            {% if table %}
+                <h2>Deconvolution Results</h2>
+                {{ table | safe }}
+            {% endif %}
+        </div>
+    </div>
+</body>
 </html>
 
 {% endblock %}
