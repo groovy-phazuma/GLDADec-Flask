@@ -61,29 +61,6 @@ class UploadReference(FlaskForm):
     file = FileField('Reference', validators=[DataRequired()])
     submit2 = SubmitField('Upload2')
 
-@app.route('/upload', methods=['GET', 'POST'])
-def upload():
-	form1 = UploadMixture()
-
-	if form1.validate_on_submit():
-		file1 = form1.file.data
-		print("Mixture Path:",form1.file)
-
-		try:
-			df1 = pd.read_csv(file1)
-			print("Mixture File:")
-			print(df1.head())
-		except Exception as e:
-			print(f"Error reading Mixture file: {e}")
-		
-		try:
-			df2 = pd.read_csv(file2)
-			print("Reference File:")
-			print(df2.head())
-		except Exception as e:
-			print(f"Error reading Reference file: {e}")
-	
-	return render_template('files/upload.html', form1=form1)
 
 @app.route('/upload_multi', methods=['GET', 'POST'])
 def upload_multipart():
