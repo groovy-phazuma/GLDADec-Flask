@@ -33,6 +33,7 @@
         h1, h2 {
             color: #333;
             text-align: center;
+            font-size: 24px;
         }
 
         .button-container {
@@ -76,12 +77,13 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 0px;
+            margin-bottom: 30px;
         }
 
         th, td {
             border: 1px solid #ddd;
-            padding: 10px;
+            padding: 5px;
             text-align: center;
         }
 
@@ -121,15 +123,15 @@
             </form>
         </div>
         
-        {% if files_data %}
-            <h2>Uploaded Files</h2>
+        {% if mixture_data %}
+            <h2>Uploaded Mixture Files</h2>
             <div style="overflow-x: auto;"> <!-- Ensures table is scrollable on small screens -->
                 <table>
                     <tr>
                         <th>Filename</th>
                         <th>Shape (Rows, Columns)</th>
                     </tr>
-                    {% for file in files_data %}
+                    {% for file in mixture_data %}
                     <tr>
                         <td>{{ file.name }}</td>
                         <td>{{ file.shape }}</td>
@@ -141,11 +143,51 @@
             <p style="text-align: center;">No files found in the uploads directory.</p>
         {% endif %}
         
-        <div class="button-container">
-            <form action="/run" method="POST">
+        {% if gs_data %}
+            <h2>Uploaded Ground Truth Proportions Files</h2>
+            <div style="overflow-x: auto;"> <!-- Ensures table is scrollable on small screens -->
+                <table>
+                    <tr>
+                        <th>Filename</th>
+                        <th>Shape (Rows, Columns)</th>
+                    </tr>
+                    {% for file in gs_data %}
+                    <tr>
+                        <td>{{ file.name }}</td>
+                        <td>{{ file.shape }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% else %}
+            <p style="text-align: center;">No files found in the uploads directory.</p>
+        {% endif %}
+
+        <!-- 両方のファイルを選択するドロップダウンメニュー -->
+        <form action="/run_home" method="POST">
+            <div>
+                <label for="mixtureSelect">Select a Mixture File:</label>
+                <select name="selected_mixture_file" id="mixtureSelect" required>
+                    {% for file in mixture_data %}
+                    <option value="{{ file.name }}">{{ file.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div style="margin-top: 15px;">
+                <label for="gsSelect">Select a Ground Truth Proportion File:</label>
+                <select name="selected_gs_file" id="gsSelect" required>
+                    {% for file in gs_data %}
+                    <option value="{{ file.name }}">{{ file.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="button-container">
                 <button class="run-button" type="submit">Run</button>
-            </form>
-        </div>
+            </div>
+        </form>
+
         
         <div class="output-container">
             {% if table %}
