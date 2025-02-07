@@ -17,11 +17,11 @@ sys.path.append(str(BASE_DIR/'GLDADec'))
 from run import pipeline
 
 
-def run_simple_gldadec(mixture_file:str = None, ground_truth_file:str = None):
+def run_simple_gldadec(mixture_file:str = None, marker_file:str = None):
     #raw_df = pd.read_csv(BASE_DIR/'GLDADec'/'data'/'GSE237801'/'mouse_dili_expression.csv',index_col=0)
+    #marker_dic = pd.read_pickle(BASE_DIR/'GLDADec'/'data'/'marker'/'human_blood_domain.pkl')
     raw_df = pd.read_csv(mixture_file,index_col=0)
-    print(raw_df.head())
-    marker_dic = pd.read_pickle(BASE_DIR/'GLDADec'/'data'/'marker'/'human_blood_domain.pkl')
+    marker_dic = pd.read_pickle(marker_file)
     random_sets = pd.read_pickle(BASE_DIR/'GLDADec'/'data'/'random_info'/'100_random_sets.pkl')
 
     # single run and evaluation
@@ -31,9 +31,9 @@ def run_simple_gldadec(mixture_file:str = None, ground_truth_file:str = None):
     pp.gene_selection(method='CV',outlier=True,topn=100)
     pp.add_marker_genes(target_cells=[],add_dic=marker_dic)
     pp.deconv_prep(random_sets=random_sets,do_plot=False,specific=True,
-                   prior_norm=True,norm_scale=10,minmax=False,mm_scale=10)
+                   prior_norm=True,norm_scale=50,minmax=False,mm_scale=10)
     pp.deconv(n=10,add_topic=0,n_iter=100,alpha=0.01,eta=0.01,refresh=10,initial_conf=1.0,
-              seed_conf=1.0,other_conf=0.0,ll_plot=True,var_plot=False)
+              seed_conf=1.0,other_conf=0.0,ll_plot=False,var_plot=False)
 
     # collect output
     deconv_res = pp.merge_total_res

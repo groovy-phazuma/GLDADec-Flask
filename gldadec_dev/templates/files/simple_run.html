@@ -98,17 +98,18 @@
 
         .output-container {
             margin-top: 30px;
-            padding: 20px;
+            padding: 10px;
             background-color: #f9f9f9;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             max-height: 400px; /* Adjust the height as needed */
             overflow-y: auto; /* Enables vertical scrolling */
+            font-size: 10px; /* Adjust the font size as needed */
         }
 
         @media (max-width: 768px) {
             table {
-                font-size: 14px;
+                font-size: 10px;
             }
         }
     </style>
@@ -143,18 +144,18 @@
             <p style="text-align: center;">No files found in the uploads directory.</p>
         {% endif %}
         
-        {% if gs_data %}
-            <h2>Uploaded Ground Truth Proportions Files</h2>
+        {% if marker_data %}
+            <h2>Uploaded Marker Genes Sets</h2>
             <div style="overflow-x: auto;"> <!-- Ensures table is scrollable on small screens -->
                 <table>
                     <tr>
                         <th>Filename</th>
-                        <th>Shape (Rows, Columns)</th>
+                        <th>Size (Cell Types)</th>
                     </tr>
-                    {% for file in gs_data %}
+                    {% for file in marker_data %}
                     <tr>
                         <td>{{ file.name }}</td>
-                        <td>{{ file.shape }}</td>
+                        <td>{{ file.shape}}</td> <!-- 辞書のサイズを表示 -->
                     </tr>
                     {% endfor %}
                 </table>
@@ -168,6 +169,7 @@
             <div>
                 <label for="mixtureSelect">Select a Mixture File:</label>
                 <select name="selected_mixture_file" id="mixtureSelect" required>
+                    <option value="" disabled selected>ファイルを選択してください</option>  <!-- デフォルトの選択肢 -->
                     {% for file in mixture_data %}
                     <option value="{{ file.name }}">{{ file.name }}</option>
                     {% endfor %}
@@ -175,9 +177,10 @@
             </div>
             
             <div style="margin-top: 15px;">
-                <label for="gsSelect">Select a Ground Truth Proportion File:</label>
-                <select name="selected_gs_file" id="gsSelect" required>
-                    {% for file in gs_data %}
+                <label for="gsSelect">Select a Marker Gene Set:</label>
+                <select name="selected_marker_file" id="gsSelect" required>
+                    <option value="" disabled selected>ファイルを選択してください</option>  <!-- デフォルトの選択肢 -->
+                    {% for file in marker_data %}
                     <option value="{{ file.name }}">{{ file.name }}</option>
                     {% endfor %}
                 </select>
@@ -187,8 +190,6 @@
                 <button class="run-button" type="submit">Run</button>
             </div>
         </form>
-
-        
         <div class="output-container">
             {% if table %}
                 <h2>Deconvolution Results</h2>

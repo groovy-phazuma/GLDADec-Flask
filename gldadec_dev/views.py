@@ -21,6 +21,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'data_storage/uploads')
 MIXTURE_FOLDER = os.path.join(BASE_DIR, 'data_storage/uploads/mixture_files')
 GS_FOLDER = os.path.join(BASE_DIR, 'data_storage/uploads/ground_truth_files')
+GS_FOLDER = os.path.join(BASE_DIR, 'data_storage/uploads/marker_dicts')
 RESULT_FOLDER = os.path.join(BASE_DIR, 'data_storage/results')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -60,25 +61,38 @@ def run_simple():
 			shape = "N/A"  # For non-CSV files, we can set shape as Not Applicable
 
 		gs_data.append({'name': filename, 'shape': shape})
+	
+	marker_data = []
+    # Loop through the files in the uploads folder
+	for filename in os.listdir(GS_FOLDER):
+		file_path = os.path.join(GS_FOLDER, filename)
+
+		if filename.endswith('.pkl'):
+			tmp_dic = pd.read_pickle(file_path)
+			shape = len(tmp_dic)
+		else:
+			shape = "N/A"  # For non-CSV files, we can set shape as Not Applicable
+
+		marker_data.append({'name': filename, 'shape': shape})
 		
 	if request.method == 'GET':
-		return render_template('files/simple_run.html', mixture_data=mixture_data, gs_data=gs_data)
+		return render_template('files/simple_run.html', mixture_data=mixture_data, marker_data=marker_data)
 	
 	elif request.method == 'POST':
 		# collect the selected files
 		selected_mixture_file = request.form['selected_mixture_file']
-		selected_gs_file = request.form['selected_gs_file']
+		selected_marker_file = request.form['selected_marker_file']
+
+		file_name = selected_mixture_file.split('_')[0]
 
 		mixture_file_path = os.path.join(MIXTURE_FOLDER, selected_mixture_file).replace('\\', '/')
-		gs_file_path = os.path.join(GS_FOLDER, selected_gs_file).replace('\\', '/')
-		print(mixture_file_path)
-
-		tmp_path = 'C:/github/GLDADec-Flask/gldadec_dev/data_storage/uploads/mixture_files/GSE65133_expression.csv'
+		marker_file_path = os.path.join(GS_FOLDER, selected_marker_file).replace('\\', '/')
 	
-		deconv_res = run_simple_gldadec(mixture_file=tmp_path, ground_truth_file=gs_file_path)
-		deconv_res.to_csv(os.path.join(RESULT_FOLDER, 'deconv_res.csv'), index=False)
+		deconv_res = run_simple_gldadec(mixture_file=mixture_file_path, marker_file=marker_file_path)
+		deconv_res.to_csv(os.path.join(RESULT_FOLDER, f'{file_name}_deconv_res.csv'), index=False)
 
-		return render_template('files/simple_run.html',table=(deconv_res.to_html(classes='table table-striped')))
+		return render_template('files/simple_run.html', mixture_data=mixture_data, marker_data=marker_data, 
+						 	   table=(deconv_res.to_html(classes='table table-striped')))
 
 class UploadMixture(FlaskForm):
     file = FileField('Mixture & Reference', validators=[DataRequired()])
